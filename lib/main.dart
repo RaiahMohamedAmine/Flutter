@@ -101,16 +101,27 @@ class ChatScreenState extends State<ChatScreen> with TickerProviderStateMixin
       animationController: new AnimationController(vsync: this,
                 duration: new Duration(milliseconds: 500)),
     );
+
     setState(() {
       _messages.add(message);
     });
     message.animationController.forward();
   }
 
+  _majMessage(ChatMessage dernierMessage, String text) {
+    dernierMessage.text+=('\n'+text);
+    dernierMessage.date=DateTime.now();
+    _messages.removeLast();
+    _messages.add(dernierMessage);
+    print(_messages.elementAt(_messages.length-1).text);
+
+  }
+
 }
 
 class ChatMessage extends StatelessWidget{
   ChatMessage({this.text, this.animationController});
+  DateTime date = DateTime.now();
   String text ;
   final String _name = "Amine Raiah";
   final AnimationController animationController ;
@@ -137,9 +148,13 @@ class ChatMessage extends StatelessWidget{
                   Container(
                     margin: EdgeInsets.only(top: 5),
                     child: Text(text),
-                  )
+                  ),
                 ],
               ),
+            ),
+            Container(
+              margin: EdgeInsets.all(5),
+              child: Text(date.hour.toString()+":"+date.minute.toString()),
             )
           ],
         ),
